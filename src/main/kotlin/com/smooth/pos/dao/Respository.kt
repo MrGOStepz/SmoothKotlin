@@ -6,7 +6,7 @@ interface PersonRepository {
     fun add(staff: Staff): Int
     fun update(staff: Staff): Int
     fun delete(staffId: Int): Int
-    fun findAll(): List<Staff>
-    fun findById(id: Int): Staff
-    fun findByFirstName(firstName: String): Staff
+    fun getAll(): List<Staff>
+    fun getById(id: Int): Staff
+    fun getByFirstName(firstName: String): Staff
 }

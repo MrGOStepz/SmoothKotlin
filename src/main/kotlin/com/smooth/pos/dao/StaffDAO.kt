@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper
 import java.sql.ResultSet
 import org.springframework.stereotype.Component
+import java.sql.PreparedStatement
+import javax.sql.DataSource
 
 @Component
 class StaffDAO : PersonRepository{
@@ -30,7 +32,7 @@ class StaffDAO : PersonRepository{
         TODO("Not yet implemented")
     }
 
-    override fun findAll(): List<Staff> {
+    override fun getAll(): List<Staff> {
         val sql = "SELECT * FROM $STAFF_TABLE"
         var rowMapper : RowMapper<Staff> = RowMapper<Staff> { rs:ResultSet, _: Int ->
             Staff(rs.getInt("id"),
@@ -46,11 +48,24 @@ class StaffDAO : PersonRepository{
         return jdbcTemplate?.query(sql,rowMapper) as List<Staff>
     }
 
-    override fun findById(id: Int): Staff {
-        TODO("Not yet implemented")
+    override fun getById(id: Int): Staff {
+        val sql = "SELECT * FROM $STAFF_TABLE WHERE STAFF_ID = ?"
+
+        var rowMapper : RowMapper<Staff> = RowMapper<Staff> { rs:ResultSet, _: Int ->
+            Staff(rs.getInt("id"),
+                rs.getString("first_name"),
+                rs.getString("last_name"),
+                rs.getString("phone"),
+                rs.getString("email"),
+                StaffPosition(rs.getInt("staff_position_id")),
+                ClockStatus(rs.getInt("clock_status_id")),
+                "",
+                rs.getInt("is_active"))
+        }
+        return jdbcTemplate?.query(sql,rowMapper,id) as Staff
     }
 
-    override fun findByFirstName(firstName: String): Staff {
+    override fun getByFirstName(firstName: String): Staff {
         TODO("Not yet implemented")
     }
 
