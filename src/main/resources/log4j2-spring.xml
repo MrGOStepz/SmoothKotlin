@@ -18,9 +18,9 @@
             </Policies>
             <DefaultRolloverStrategy max="1" />
 
-<!--            <JSONEventLayoutLog4j2 dateFormat="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" charset="UTF-8" compact="true" properties="true" locationInfo="false">-->
-<!--                <KeyValuePair key="Component" value="Smooth"/>-->
-<!--            </JSONEventLayoutLog4j2>-->
+            <JSONEventLayoutLog4j2 dateFormat="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" charset="UTF-8" compact="true" properties="true" locationInfo="false">
+                <KeyValuePair key="Component" value="Smooth"/>
+            </JSONEventLayoutLog4j2>
 
             <JsonLayout compact="true" eventEol="true" stacktraceAsString="true">
             </JsonLayout>
@@ -41,5 +41,3 @@
         </Root>
     </Loggers>
 </Configuration>
-
-        https://medium.com/@vinod.bhatt/print-logs-output-as-json-string-in-spring-boot-java-log4j2-7577c8e9229b
