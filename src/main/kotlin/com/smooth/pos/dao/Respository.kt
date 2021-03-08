@@ -9,5 +9,5 @@ interface PersonRepository {
     fun getAll(): List<Staff>
     fun getById(id: Int): Staff
     fun getByPassword(password: String): Staff
-    fun getByColumn(columnName: String): Staff
+    fun getByColumn(columnName: String, valueName: String): List<Staff>
 }
