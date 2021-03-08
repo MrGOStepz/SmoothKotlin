@@ -16,7 +16,7 @@ class StaffService {
     }
 
     fun getAllStaff() : List<Staff>? {
-        return staffDAO?.findAll();
+        return staffDAO?.getAll();
     }
 
 }
