@@ -1,4 +1,5 @@
 package com.smooth.pos.controller
+import com.smooth.pos.log.message.ParameterizedMapMessage
 import com.smooth.pos.model.Staff
 //import com.smooth.pos.model.StaffRequest
 import com.smooth.pos.service.StaffService
@@ -32,7 +33,7 @@ class StaffController {
 
     @GetMapping
     fun getStaff(): List<Staff>? {
-        logger.info("TEST")
+        logger.info(ParameterizedMapMessage("TEst").addKeyValue("KEY","VALUE"))
         logger.error("Error")
         return staffService?.getAllStaff()
     }
