@@ -33,6 +33,13 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
+
+//    implementation("org.apache.logging.log4j", "log4j-core")
+//    implementation("org.apache.logging.log4j","log4j-web")
+//    implementation("org.apache.commons", "commons-lang3")
+
+
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("mysql:mysql-connector-java")

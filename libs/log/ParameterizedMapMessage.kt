@@ -1,11 +1,13 @@
-package com.smooth.pos.log.message
+package com.smooth.pos.log
 
 import org.apache.logging.log4j.message.ParameterizedMessage
+import java.util.SortedMap
+import java.util.TreeMap
+import com.smooth.pos.log.ParameterizedMapMessage
 import java.math.BigDecimal
-import java.util.*
 
 class ParameterizedMapMessage : ParameterizedMessage {
-    private val data: SortedMap<String, Any> = TreeMap()
+    val data: SortedMap<String, Any> = TreeMap()
 
     /**
      * Constructor

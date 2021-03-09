@@ -1,4 +1,4 @@
-package com.smooth.pos.log.constant
+package com.smooth.pos.log
 
 object StandardField {
     /**

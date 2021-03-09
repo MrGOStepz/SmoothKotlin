@@ -1,42 +1,45 @@
-package com.smooth.pos.log.layout
+package com.smooth.pos.log
 
+import org.apache.logging.log4j.core.layout.AbstractStringLayout
 import com.fasterxml.jackson.core.JsonFactory
-import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
-import com.fasterxml.jackson.core.util.MinimalPrettyPrinter
-import com.smooth.pos.log.constant.StandardField
-import com.smooth.pos.log.message.ParameterizedMapMessage
-import org.apache.logging.log4j.Logger
-import org.apache.logging.log4j.core.Layout
 import org.apache.logging.log4j.core.LogEvent
+import java.io.StringWriter
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.util.MinimalPrettyPrinter
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
+import com.smooth.pos.log.StandardField
+import com.smooth.pos.log.JSONEventLayoutLog4j2
+import java.io.IOException
+import kotlin.Throws
+import com.smooth.pos.log.ParameterizedMapMessage
+import org.apache.commons.lang3.time.FastDateFormat
+import org.apache.logging.log4j.Logger
+import org.apache.logging.log4j.message.MapMessage
+import java.io.PrintWriter
+import java.util.TreeSet
+import org.apache.logging.log4j.ThreadContext.ContextStack
+import org.apache.logging.log4j.core.Layout
 import org.apache.logging.log4j.core.config.Node
 import org.apache.logging.log4j.core.config.plugins.Plugin
+import java.math.BigDecimal
+import java.lang.StackTraceElement
+import org.apache.logging.log4j.status.StatusLogger
+import java.util.TimeZone
+import org.apache.logging.log4j.core.config.plugins.PluginFactory
 import org.apache.logging.log4j.core.config.plugins.PluginAttribute
 import org.apache.logging.log4j.core.config.plugins.PluginElement
-import org.apache.logging.log4j.core.config.plugins.PluginFactory
-import org.apache.logging.log4j.core.layout.AbstractStringLayout
 import org.apache.logging.log4j.core.util.KeyValuePair
-import org.apache.logging.log4j.core.util.datetime.FastDateFormat
-import org.apache.logging.log4j.message.MapMessage
-import org.apache.logging.log4j.status.StatusLogger
 import org.apache.logging.log4j.util.Strings
-import java.io.IOException
-import java.io.PrintWriter
-import java.io.StringWriter
 import java.lang.StringBuilder
 import java.lang.management.ManagementFactory
-import java.math.BigDecimal
 import java.nio.charset.Charset
-import java.util.*
-import kotlin.collections.HashMap
-
+import java.util.HashMap
 
 @Plugin(name = "JSONEventLayoutLog4j2", category = Node.CATEGORY, elementType = Layout.ELEMENT_TYPE, printObject = true)
 class JSONEventLayoutLog4j2(
     dateFormat: String?, locationInfo: Boolean, properties: Boolean, compact: Boolean,
     additionalLogAttributes: Map<String?, String?>?, charset: Charset?
-) :
-    AbstractStringLayout(charset) {
+) : AbstractStringLayout(charset) {
     val noStackTraceLine = 3
     private val dateFormat: FastDateFormat
     private var locationInfo = false
@@ -127,9 +130,8 @@ class JSONEventLayoutLog4j2(
          */
         val message = logEvent.message
         if (message is ParameterizedMapMessage) {
-            val mapMessage: ParameterizedMapMessage = message as ParameterizedMapMessage
             jg.writeStringField(StandardField.MESSAGE, logEvent.message.formattedMessage)
-            val map: Map<String, Any> = mapMessage.getData()
+            val map = message.data
             for ((key, value) in map) {
                 writeJsonKeyValue(jg, key, value)
             }
