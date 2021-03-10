@@ -1,4 +1,5 @@
 package com.smooth.pos.controller
+import com.smooth.pos.log.LogSmooth
 import com.smooth.pos.model.Staff
 import com.smooth.pos.service.StaffService
 import mu.KotlinLogging
@@ -20,7 +21,9 @@ class StaffController {
 
     @GetMapping
     fun getStaff(): List<Staff>? {
-        logger.error("Error")
+        LogSmooth.addKeyValue("Method","getStaff")
+        LogSmooth.addKeyValue("Good","Haha")
+        logger.error(LogSmooth.getMessage())
         return staffService?.getAllStaff()
     }
 

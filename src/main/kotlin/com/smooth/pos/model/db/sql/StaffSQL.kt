@@ -1,6 +1,5 @@
 package com.smooth.pos.model.db.sql
 
-import com.smooth.pos.model.TableName
 import com.smooth.pos.model.TableName.Companion.TABLE_STAFF
 import com.smooth.pos.model.db.ColumnName.Companion.COL_CLOCK_STATUS_ID
 import com.smooth.pos.model.db.ColumnName.Companion.COL_EMAIL

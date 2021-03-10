@@ -14,3 +14,8 @@ data class ClockStatus (
     var clockStatusName: String? = null
 )
 
+data class CookStatus (
+    var id: Int? = 0,
+    var cookStatusName: String? = null
+)
+

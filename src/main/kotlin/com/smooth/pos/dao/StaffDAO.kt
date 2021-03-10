@@ -29,11 +29,11 @@ import org.springframework.stereotype.Component
 private val logger = KotlinLogging.logger {}
 
 @Component
-class StaffDAO : PersonRepository {
+class StaffDAO: StaffRepository {
     private var jdbcTemplate: JdbcTemplate? = null
 
     @Autowired
-    fun init(jdbcTemplate: JdbcTemplate?) {
+    private fun init(jdbcTemplate: JdbcTemplate?) {
         this.jdbcTemplate = jdbcTemplate
     }
 
@@ -51,7 +51,7 @@ class StaffDAO : PersonRepository {
                 staff.password,
                 staff.isActive
             )
-            logger.info("AddStaff")
+            logger.info("add()")
             isSuccess = true
         } catch (ex: Exception) {
             logger.error(ex.toString())
