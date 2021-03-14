@@ -1,5 +1,6 @@
 package com.smooth.pos.dao
 
+import com.smooth.pos.dao.respository.StaffRepository
 import com.smooth.pos.model.ClockStatus
 import com.smooth.pos.model.Staff
 import com.smooth.pos.model.StaffPosition

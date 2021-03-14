@@ -21,21 +21,16 @@ class StaffController {
 
     @GetMapping
     fun getStaff(): List<Staff>? {
-        LogSmooth.addKeyValue("Method","getStaff")
-        LogSmooth.addKeyValue("Good","Haha")
-        logger.error(LogSmooth.getMessage())
         return staffService?.getAllStaff()
     }
 
 
-    //TODO
-//    @PostMapping
-//    fun addNewStaff(@RequestBody staff: StaffRequest?): String? {
-////        staffService.addNewStaff(staff)
-//        if (staff != null) {
-//            return staff.firstName
-//        }
-//        return "Error"
-//    }
+    @PostMapping
+    fun addNewStaff(@RequestBody staff: StaffRequest?): String? {
+        if (staff != null) {
+            return staff.firstName
+        }
+        return "Error"
+    }
 
 }

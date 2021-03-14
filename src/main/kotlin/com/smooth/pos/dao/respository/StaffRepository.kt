@@ -1,4 +1,4 @@
-package com.smooth.pos.dao
+package com.smooth.pos.dao.respository
 
 import com.smooth.pos.model.Staff
 
