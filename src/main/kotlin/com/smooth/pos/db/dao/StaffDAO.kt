@@ -2,7 +2,6 @@ package com.smooth.pos.db.dao
 
 import com.smooth.pos.db.respository.StaffRepository
 import com.smooth.pos.model.Staff
-import com.smooth.pos.model.StaffPosition
 import com.smooth.pos.model.db.ColumnName.Companion.COL_CLOCK_STATUS_ID
 import com.smooth.pos.model.db.ColumnName.Companion.COL_EMAIL
 import com.smooth.pos.model.db.ColumnName.Companion.COL_FIRST_NAME
@@ -19,6 +18,7 @@ import com.smooth.pos.model.db.sql.StaffSQL.Companion.SQL_GET_STAFF_BY_COLUMN
 import com.smooth.pos.model.db.sql.StaffSQL.Companion.SQL_GET_STAFF_BY_ID
 import com.smooth.pos.model.db.sql.StaffSQL.Companion.SQL_GET_STAFF_BY_PASSWORD
 import com.smooth.pos.model.db.sql.StaffSQL.Companion.SQL_UPDATE_STAFF
+import com.smooth.pos.model.staff.StaffPosition
 import com.smooth.pos.model.status.ClockStatus
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Autowired

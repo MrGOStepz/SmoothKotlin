@@ -1,8 +1,8 @@
 package com.smooth.pos.service
 
-import com.smooth.pos.db.ClockStatusDAO
+import com.smooth.pos.db.dao.ClockStatusDAO
 import com.smooth.pos.db.respository.ClockStatusRepository
-import com.smooth.pos.model.ClockStatus
+import com.smooth.pos.model.status.ClockStatus
 import org.springframework.beans.factory.annotation.Autowired
 
 class ClockStatusService {
