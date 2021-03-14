@@ -1,6 +1,6 @@
-package com.smooth.pos.dao.respository
+package com.smooth.pos.db.respository
 
-import com.smooth.pos.model.ClockStatus
+import com.smooth.pos.model.status.ClockStatus
 
 interface ClockStatusRepository {
     fun add(clockStatus: ClockStatus): Boolean

@@ -1,6 +1,6 @@
 package com.smooth.pos.service
 
-import com.smooth.pos.dao.StaffDAO
+import com.smooth.pos.db.StaffDAO
 import com.smooth.pos.model.Staff
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component

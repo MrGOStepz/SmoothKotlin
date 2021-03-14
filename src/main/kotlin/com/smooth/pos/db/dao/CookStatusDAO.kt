@@ -1,12 +1,12 @@
-package com.smooth.pos.dao
+package com.smooth.pos.db.dao
 
-import com.smooth.pos.dao.respository.ClockStatusRepository
+import com.smooth.pos.db.respository.CookStatusRepository
 import com.smooth.pos.log.KeyLogger.Companion.MESSAGE
 import com.smooth.pos.log.KeyLogger.Companion.METHOD
 import com.smooth.pos.log.LogSmooth
-import com.smooth.pos.model.ClockStatus
+import com.smooth.pos.model.CookStatus
 import com.smooth.pos.model.db.ColumnName
-import com.smooth.pos.model.db.sql.ClockStatusSQL
+import com.smooth.pos.model.db.sql.CookStatusSQL
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.JdbcTemplate
@@ -17,7 +17,7 @@ import java.sql.ResultSet
 private val logger = KotlinLogging.logger {}
 
 @Component
-class ClockStatusDAO: ClockStatusRepository {
+class CookStatusDAO: CookStatusRepository {
     private var jdbcTemplate: JdbcTemplate? = null
 
     @Autowired
@@ -25,12 +25,12 @@ class ClockStatusDAO: ClockStatusRepository {
         this.jdbcTemplate = jdbcTemplate
     }
 
-    override fun add(clockStatus: ClockStatus): Boolean {
+    override fun add(cookStatus: CookStatus): Boolean {
         var isSuccess: Boolean = false
         try {
             jdbcTemplate?.update(
-                ClockStatusSQL.SQL_ADD_CLOCK_STATUS,
-                clockStatus.clockStatusName
+                CookStatusSQL.SQL_ADD_COOK_STATUS,
+                cookStatus.cookStatusName
             )
             logger.info("")
             isSuccess = true
@@ -42,13 +42,13 @@ class ClockStatusDAO: ClockStatusRepository {
         return isSuccess
     }
 
-    override fun update(clockStatus: ClockStatus): Boolean {
+    override fun update(cookStatus: CookStatus): Boolean {
         var isSuccess: Boolean = false
         try {
             jdbcTemplate?.update(
-                ClockStatusSQL.SQL_UPDATE_CLOCK_STATUS,
-                clockStatus.clockStatusName,
-                clockStatus.id
+                CookStatusSQL.SQL_UPDATE_COOK_STATUS,
+                cookStatus.cookStatusName,
+                cookStatus.id
             )
             logger.info("")
             isSuccess = true
@@ -60,42 +60,42 @@ class ClockStatusDAO: ClockStatusRepository {
         return isSuccess
     }
 
-    override fun delete(clockStatusId: Int): Boolean {
+    override fun delete(cookStatusId: Int): Boolean {
         var isSuccess: Boolean = false
         try {
             jdbcTemplate?.update(
-                ClockStatusSQL.SQL_DELETE_CLOCK_STATUS,
-                clockStatusId
+                CookStatusSQL.SQL_DELETE_COOK_STATUS,
+                cookStatusId
             )
             logger.info("")
             isSuccess = true
         } catch (ex: Exception) {
             LogSmooth.addKeyValue(METHOD, "delete()")
-            LogSmooth.addKeyValue("ClockStatusId", clockStatusId)
+            LogSmooth.addKeyValue("CookStatusId", cookStatusId)
             LogSmooth.addKeyValue(MESSAGE, ex.toString())
             logger.error(LogSmooth.getMessage())
         }
         return isSuccess
     }
 
-    override fun getAll(): List<ClockStatus> {
-        var clockStatusList: List<ClockStatus> = listOf<ClockStatus>()
+    override fun getAll(): List<CookStatus> {
+        var cookStatusList: List<CookStatus> = listOf<CookStatus>()
         try {
-            clockStatusList = jdbcTemplate?.query(ClockStatusSQL.SQL_GET_ALL_CLOCK_STATUS, clockStatusRowMapper()) as List<ClockStatus>
-            return clockStatusList
+            cookStatusList = jdbcTemplate?.query(CookStatusSQL.SQL_GET_ALL_COOK_STATUS, cookStatusRowMapper()) as List<CookStatus>
+            return cookStatusList
         } catch (ex: Exception) {
             LogSmooth.addKeyValue(METHOD, "getAll()")
             LogSmooth.addKeyValue(MESSAGE, ex.toString())
             logger.error(LogSmooth.getMessage())
         }
-        return clockStatusList;
+        return cookStatusList;
     }
 
-    private fun clockStatusRowMapper(): RowMapper<ClockStatus> {
-        return RowMapper<ClockStatus> { rs: ResultSet, _: Int ->
-            ClockStatus(
-                rs.getInt(ColumnName.COL_CLOCK_STATUS_ID),
-                rs.getString(ColumnName.COL_CLOCK_STATUS_NAME)
+    private fun cookStatusRowMapper(): RowMapper<CookStatus> {
+        return RowMapper<CookStatus> { rs: ResultSet, _: Int ->
+            CookStatus(
+                rs.getInt(ColumnName.COL_COOK_STATUS_ID),
+                rs.getString(ColumnName.COL_COOK_STATUS_NAME)
             )
         }
     }

@@ -1,5 +1,8 @@
 package com.smooth.pos.model
 
+import com.smooth.pos.model.staff.StaffPosition
+import com.smooth.pos.model.status.ClockStatus
+
 data class Staff(
     var id: Int? = 0,
     var firstName: String? = null,
@@ -11,8 +14,3 @@ data class Staff(
     var password: String? = null,
     var isActive: Int? = 1
 )
-
-data class StaffPosition (
-    var id: Int? = 0,
-    var staffPositionName: String? = null
-    )
