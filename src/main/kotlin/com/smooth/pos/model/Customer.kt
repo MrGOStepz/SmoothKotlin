@@ -9,9 +9,9 @@ data class Customer(
     var phone: String? = null,
     var email: String? = null,
     var address: String? = null,
-    var totalOrder: Int? = null,
-    var lastActive: Date? = null,
     var dateOfBirth: Date? = null,
+    var lastActive: Date? = null,
     var card: String? = null,
+    var totalOrder: Int? = null,
     var isActive: Int? = 1
 )

@@ -1,13 +1,14 @@
 package com.smooth.pos.db.dao
 
-import com.smooth.pos.db.respository.ClockStatusRepository
+import com.smooth.pos.db.respository.IngredientRepository
 import com.smooth.pos.log.KeyLogger.Companion.MESSAGE
 import com.smooth.pos.log.KeyLogger.Companion.METHOD
 import com.smooth.pos.log.LogSmooth
-import com.smooth.pos.model.db.ColumnName.Companion.COL_CLOCK_STATUS_ID
-import com.smooth.pos.model.db.ColumnName.Companion.COL_CLOCK_STATUS_NAME
-import com.smooth.pos.model.db.sql.ClockStatusSQL
-import com.smooth.pos.model.status.ClockStatus
+import com.smooth.pos.model.db.ColumnName.Companion.COL_INGREDIENT_ID
+import com.smooth.pos.model.db.ColumnName.Companion.COL_INGREDIENT_IMAGE_PATH
+import com.smooth.pos.model.db.ColumnName.Companion.COL_INGREDIENT_NAME
+import com.smooth.pos.model.db.sql.IngredientSQL
+import com.smooth.pos.model.product.Ingredient
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.JdbcTemplate
@@ -18,7 +19,7 @@ import java.sql.ResultSet
 private val logger = KotlinLogging.logger {}
 
 @Component
-class ClockStatusDAO: ClockStatusRepository {
+class IngredientDAO: IngredientRepository {
     private var jdbcTemplate: JdbcTemplate? = null
 
     @Autowired
@@ -26,12 +27,13 @@ class ClockStatusDAO: ClockStatusRepository {
         this.jdbcTemplate = jdbcTemplate
     }
 
-    override fun add(clockStatus: ClockStatus): Boolean {
+    override fun add(ingredient: Ingredient): Boolean {
         var isSuccess: Boolean = false
         try {
             jdbcTemplate?.update(
-                ClockStatusSQL.SQL_ADD_CLOCK_STATUS,
-                clockStatus.clockStatusName
+                IngredientSQL.SQL_ADD_INGREDIENT,
+                ingredient.ingredientName,
+                ingredient.ingredientImagePath
             )
             isSuccess = true
         } catch (ex: Exception) {
@@ -42,13 +44,14 @@ class ClockStatusDAO: ClockStatusRepository {
         return isSuccess
     }
 
-    override fun update(clockStatus: ClockStatus): Boolean {
+    override fun update(ingredient: Ingredient): Boolean {
         var isSuccess: Boolean = false
         try {
             jdbcTemplate?.update(
-                ClockStatusSQL.SQL_UPDATE_CLOCK_STATUS,
-                clockStatus.clockStatusName,
-                clockStatus.id
+                IngredientSQL.SQL_UPDATE_INGREDIENT,
+                ingredient.ingredientName,
+                ingredient.ingredientImagePath,
+                ingredient.id
             )
             isSuccess = true
         } catch (ex: Exception) {
@@ -59,41 +62,42 @@ class ClockStatusDAO: ClockStatusRepository {
         return isSuccess
     }
 
-    override fun delete(clockStatusId: Int): Boolean {
+    override fun delete(ingredientId: Int): Boolean {
         var isSuccess: Boolean = false
         try {
             jdbcTemplate?.update(
-                ClockStatusSQL.SQL_DELETE_CLOCK_STATUS,
-                clockStatusId
+                IngredientSQL.SQL_DELETE_INGREDIENT,
+                ingredientId
             )
             isSuccess = true
         } catch (ex: Exception) {
             LogSmooth.addKeyValue(METHOD, "delete()")
-            LogSmooth.addKeyValue("ClockStatusId", clockStatusId)
+            LogSmooth.addKeyValue("IngredientId", ingredientId)
             LogSmooth.addKeyValue(MESSAGE, ex.toString())
             logger.error(LogSmooth.getMessage())
         }
         return isSuccess
     }
 
-    override fun getAll(): List<ClockStatus> {
-        var clockStatusList: List<ClockStatus> = listOf<ClockStatus>()
+    override fun getAll(): List<Ingredient> {
+        var ingredientList: List<Ingredient> = listOf<Ingredient>()
         try {
-            clockStatusList = jdbcTemplate?.query(ClockStatusSQL.SQL_GET_ALL_CLOCK_STATUS, clockStatusRowMapper()) as List<ClockStatus>
-            return clockStatusList
+            ingredientList = jdbcTemplate?.query(IngredientSQL.SQL_GET_ALL_INGREDIENT, ingredientRowMapper()) as List<Ingredient>
+            return ingredientList
         } catch (ex: Exception) {
             LogSmooth.addKeyValue(METHOD, "getAll()")
             LogSmooth.addKeyValue(MESSAGE, ex.toString())
             logger.error(LogSmooth.getMessage())
         }
-        return clockStatusList;
+        return ingredientList;
     }
 
-    private fun clockStatusRowMapper(): RowMapper<ClockStatus> {
-        return RowMapper<ClockStatus> { rs: ResultSet, _: Int ->
-            ClockStatus(
-                rs.getInt(COL_CLOCK_STATUS_ID),
-                rs.getString(COL_CLOCK_STATUS_NAME)
+    private fun ingredientRowMapper(): RowMapper<Ingredient> {
+        return RowMapper<Ingredient> { rs: ResultSet, _: Int ->
+            Ingredient(
+                rs.getInt(COL_INGREDIENT_ID),
+                rs.getString(COL_INGREDIENT_NAME),
+                rs.getString(COL_INGREDIENT_IMAGE_PATH)
             )
         }
     }

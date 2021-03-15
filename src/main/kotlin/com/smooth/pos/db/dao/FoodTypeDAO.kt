@@ -1,13 +1,13 @@
 package com.smooth.pos.db.dao
 
-import com.smooth.pos.db.respository.ClockStatusRepository
+import com.smooth.pos.db.respository.FoodTypeRepository
 import com.smooth.pos.log.KeyLogger.Companion.MESSAGE
 import com.smooth.pos.log.KeyLogger.Companion.METHOD
 import com.smooth.pos.log.LogSmooth
-import com.smooth.pos.model.db.ColumnName.Companion.COL_CLOCK_STATUS_ID
-import com.smooth.pos.model.db.ColumnName.Companion.COL_CLOCK_STATUS_NAME
-import com.smooth.pos.model.db.sql.ClockStatusSQL
-import com.smooth.pos.model.status.ClockStatus
+import com.smooth.pos.model.db.ColumnName.Companion.COL_FOOD_TYPE_ID
+import com.smooth.pos.model.db.ColumnName.Companion.COL_FOOD_TYPE_NAME
+import com.smooth.pos.model.db.sql.FoodTypeSQL
+import com.smooth.pos.model.type.FoodType
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.JdbcTemplate
@@ -18,7 +18,7 @@ import java.sql.ResultSet
 private val logger = KotlinLogging.logger {}
 
 @Component
-class ClockStatusDAO: ClockStatusRepository {
+class FoodTypeDAO: FoodTypeRepository {
     private var jdbcTemplate: JdbcTemplate? = null
 
     @Autowired
@@ -26,12 +26,12 @@ class ClockStatusDAO: ClockStatusRepository {
         this.jdbcTemplate = jdbcTemplate
     }
 
-    override fun add(clockStatus: ClockStatus): Boolean {
+    override fun add(foodType: FoodType): Boolean {
         var isSuccess: Boolean = false
         try {
             jdbcTemplate?.update(
-                ClockStatusSQL.SQL_ADD_CLOCK_STATUS,
-                clockStatus.clockStatusName
+                FoodTypeSQL.SQL_ADD_FOOD_TYPE,
+                foodType.foodTypeName
             )
             isSuccess = true
         } catch (ex: Exception) {
@@ -42,13 +42,13 @@ class ClockStatusDAO: ClockStatusRepository {
         return isSuccess
     }
 
-    override fun update(clockStatus: ClockStatus): Boolean {
+    override fun update(foodType: FoodType): Boolean {
         var isSuccess: Boolean = false
         try {
             jdbcTemplate?.update(
-                ClockStatusSQL.SQL_UPDATE_CLOCK_STATUS,
-                clockStatus.clockStatusName,
-                clockStatus.id
+                FoodTypeSQL.SQL_UPDATE_FOOD_TYPE,
+                foodType.foodTypeName,
+                foodType.id
             )
             isSuccess = true
         } catch (ex: Exception) {
@@ -59,41 +59,41 @@ class ClockStatusDAO: ClockStatusRepository {
         return isSuccess
     }
 
-    override fun delete(clockStatusId: Int): Boolean {
+    override fun delete(foodTypeId: Int): Boolean {
         var isSuccess: Boolean = false
         try {
             jdbcTemplate?.update(
-                ClockStatusSQL.SQL_DELETE_CLOCK_STATUS,
-                clockStatusId
+                FoodTypeSQL.SQL_DELETE_FOOD_TYPE,
+                foodTypeId
             )
             isSuccess = true
         } catch (ex: Exception) {
             LogSmooth.addKeyValue(METHOD, "delete()")
-            LogSmooth.addKeyValue("ClockStatusId", clockStatusId)
+            LogSmooth.addKeyValue("FoodTypeId", foodTypeId)
             LogSmooth.addKeyValue(MESSAGE, ex.toString())
             logger.error(LogSmooth.getMessage())
         }
         return isSuccess
     }
 
-    override fun getAll(): List<ClockStatus> {
-        var clockStatusList: List<ClockStatus> = listOf<ClockStatus>()
+    override fun getAll(): List<FoodType> {
+        var foodTypeList: List<FoodType> = listOf<FoodType>()
         try {
-            clockStatusList = jdbcTemplate?.query(ClockStatusSQL.SQL_GET_ALL_CLOCK_STATUS, clockStatusRowMapper()) as List<ClockStatus>
-            return clockStatusList
+            foodTypeList = jdbcTemplate?.query(FoodTypeSQL.SQL_GET_ALL_FOOD_TYPE, foodTypeRowMapper()) as List<FoodType>
+            return foodTypeList
         } catch (ex: Exception) {
             LogSmooth.addKeyValue(METHOD, "getAll()")
             LogSmooth.addKeyValue(MESSAGE, ex.toString())
             logger.error(LogSmooth.getMessage())
         }
-        return clockStatusList;
+        return foodTypeList;
     }
 
-    private fun clockStatusRowMapper(): RowMapper<ClockStatus> {
-        return RowMapper<ClockStatus> { rs: ResultSet, _: Int ->
-            ClockStatus(
-                rs.getInt(COL_CLOCK_STATUS_ID),
-                rs.getString(COL_CLOCK_STATUS_NAME)
+    private fun foodTypeRowMapper(): RowMapper<FoodType> {
+        return RowMapper<FoodType> { rs: ResultSet, _: Int ->
+            FoodType(
+                rs.getInt(COL_FOOD_TYPE_ID),
+                rs.getString(COL_FOOD_TYPE_NAME)
             )
         }
     }

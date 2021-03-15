@@ -1,6 +1,6 @@
 package com.smooth.pos.db.respository
 
-import com.smooth.pos.model.StaffPosition
+import com.smooth.pos.model.staff.StaffPosition
 
 interface StaffPositionRepository {
     fun add(staffPosition: StaffPosition): Boolean

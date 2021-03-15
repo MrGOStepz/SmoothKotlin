@@ -1,6 +1,8 @@
 package com.smooth.pos.db.dao
 
 import com.smooth.pos.db.respository.StaffRepository
+import com.smooth.pos.log.KeyLogger
+import com.smooth.pos.log.LogSmooth
 import com.smooth.pos.model.Staff
 import com.smooth.pos.model.db.ColumnName.Companion.COL_CLOCK_STATUS_ID
 import com.smooth.pos.model.db.ColumnName.Companion.COL_EMAIL
@@ -52,10 +54,11 @@ class StaffDAO: StaffRepository {
                 staff.password,
                 staff.isActive
             )
-            logger.info("add()")
             isSuccess = true
         } catch (ex: Exception) {
-            logger.error(ex.toString())
+            LogSmooth.addKeyValue(KeyLogger.METHOD, "add()")
+            LogSmooth.addKeyValue(KeyLogger.MESSAGE, ex.toString())
+            logger.error(LogSmooth.getMessage())
         }
         return isSuccess
     }
@@ -77,7 +80,9 @@ class StaffDAO: StaffRepository {
             )
             isSuccess = true
         } catch (ex: Exception) {
-            logger.error("")
+            LogSmooth.addKeyValue(KeyLogger.METHOD, "update()")
+            LogSmooth.addKeyValue(KeyLogger.MESSAGE, ex.toString())
+            logger.error(LogSmooth.getMessage())
         }
         return isSuccess
     }
@@ -88,7 +93,9 @@ class StaffDAO: StaffRepository {
             jdbcTemplate?.update(SQL_DELETE_STAFF, staffId)
             isSuccess = true
         } catch (ex: Exception) {
-            logger.error("")
+            LogSmooth.addKeyValue(KeyLogger.METHOD, "delete()")
+            LogSmooth.addKeyValue(KeyLogger.MESSAGE, ex.toString())
+            logger.error(LogSmooth.getMessage())
         }
         return isSuccess
     }
@@ -99,7 +106,9 @@ class StaffDAO: StaffRepository {
             staffList = jdbcTemplate?.query(SQL_GET_ALL_STAFF, staffRowMapper()) as List<Staff>
             return staffList
         } catch (ex: Exception) {
-            logger.error(ex.toString())
+            LogSmooth.addKeyValue(KeyLogger.METHOD, "getAll()")
+            LogSmooth.addKeyValue(KeyLogger.MESSAGE, ex.toString())
+            logger.error(LogSmooth.getMessage())
         }
         return staffList;
     }
@@ -110,7 +119,9 @@ class StaffDAO: StaffRepository {
             staff = jdbcTemplate?.query(SQL_GET_STAFF_BY_ID, staffRowMapper(), id) as Staff
             return staff
         } catch (ex: Exception) {
-            logger.error(ex.toString())
+            LogSmooth.addKeyValue(KeyLogger.METHOD, "getById()")
+            LogSmooth.addKeyValue(KeyLogger.MESSAGE, ex.toString())
+            logger.error(LogSmooth.getMessage())
         }
         return staff;
     }
@@ -121,7 +132,9 @@ class StaffDAO: StaffRepository {
             staff = jdbcTemplate?.query(SQL_GET_STAFF_BY_PASSWORD, staffRowMapper(), password) as Staff
             return staff
         } catch (ex: Exception) {
-            logger.error(ex.toString())
+            LogSmooth.addKeyValue(KeyLogger.METHOD, "getByPassword()")
+            LogSmooth.addKeyValue(KeyLogger.MESSAGE, ex.toString())
+            logger.error(LogSmooth.getMessage())
         }
         return staff;
     }
@@ -132,7 +145,9 @@ class StaffDAO: StaffRepository {
             staffList = jdbcTemplate?.query(SQL_GET_STAFF_BY_COLUMN, staffRowMapper(), columnName, columnName, valueName) as List<Staff>
             return staffList
         } catch (ex: Exception) {
-            logger.error(ex.toString())
+            LogSmooth.addKeyValue(KeyLogger.METHOD, "getByColumn()")
+            LogSmooth.addKeyValue(KeyLogger.MESSAGE, ex.toString())
+            logger.error(LogSmooth.getMessage())
         }
         return staffList;
     }

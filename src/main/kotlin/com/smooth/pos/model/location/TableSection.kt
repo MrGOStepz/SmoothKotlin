@@ -1,11 +1,5 @@
 package com.smooth.pos.model.location
 
-data class Section(
-    var id: Int? = 0,
-    var sectionName: String? = null,
-    var isActive: Int? = 1
-)
-
 data class TableSection(
     var id: Int? = 0,
     var tableSectionName: String? = null,

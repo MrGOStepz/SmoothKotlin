@@ -1,13 +1,13 @@
 package com.smooth.pos.db.dao
 
-import com.smooth.pos.db.respository.ClockStatusRepository
+import com.smooth.pos.db.respository.OrderTypeRepository
 import com.smooth.pos.log.KeyLogger.Companion.MESSAGE
 import com.smooth.pos.log.KeyLogger.Companion.METHOD
 import com.smooth.pos.log.LogSmooth
-import com.smooth.pos.model.db.ColumnName.Companion.COL_CLOCK_STATUS_ID
-import com.smooth.pos.model.db.ColumnName.Companion.COL_CLOCK_STATUS_NAME
-import com.smooth.pos.model.db.sql.ClockStatusSQL
-import com.smooth.pos.model.status.ClockStatus
+import com.smooth.pos.model.db.ColumnName.Companion.COL_ORDER_TYPE_ID
+import com.smooth.pos.model.db.ColumnName.Companion.COL_ORDER_TYPE_NAME
+import com.smooth.pos.model.db.sql.OrderTypeSQL
+import com.smooth.pos.model.order.OrderType
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.JdbcTemplate
@@ -18,7 +18,7 @@ import java.sql.ResultSet
 private val logger = KotlinLogging.logger {}
 
 @Component
-class ClockStatusDAO: ClockStatusRepository {
+class OrderTypeDAO: OrderTypeRepository {
     private var jdbcTemplate: JdbcTemplate? = null
 
     @Autowired
@@ -26,12 +26,12 @@ class ClockStatusDAO: ClockStatusRepository {
         this.jdbcTemplate = jdbcTemplate
     }
 
-    override fun add(clockStatus: ClockStatus): Boolean {
+    override fun add(orderType: OrderType): Boolean {
         var isSuccess: Boolean = false
         try {
             jdbcTemplate?.update(
-                ClockStatusSQL.SQL_ADD_CLOCK_STATUS,
-                clockStatus.clockStatusName
+                OrderTypeSQL.SQL_ADD_ORDER_TYPE,
+                orderType.orderTypeName
             )
             isSuccess = true
         } catch (ex: Exception) {
@@ -42,13 +42,13 @@ class ClockStatusDAO: ClockStatusRepository {
         return isSuccess
     }
 
-    override fun update(clockStatus: ClockStatus): Boolean {
+    override fun update(orderType: OrderType): Boolean {
         var isSuccess: Boolean = false
         try {
             jdbcTemplate?.update(
-                ClockStatusSQL.SQL_UPDATE_CLOCK_STATUS,
-                clockStatus.clockStatusName,
-                clockStatus.id
+                OrderTypeSQL.SQL_UPDATE_ORDER_TYPE,
+                orderType.orderTypeName,
+                orderType.id
             )
             isSuccess = true
         } catch (ex: Exception) {
@@ -59,41 +59,41 @@ class ClockStatusDAO: ClockStatusRepository {
         return isSuccess
     }
 
-    override fun delete(clockStatusId: Int): Boolean {
+    override fun delete(orderTypeId: Int): Boolean {
         var isSuccess: Boolean = false
         try {
             jdbcTemplate?.update(
-                ClockStatusSQL.SQL_DELETE_CLOCK_STATUS,
-                clockStatusId
+                OrderTypeSQL.SQL_DELETE_ORDER_TYPE,
+                orderTypeId
             )
             isSuccess = true
         } catch (ex: Exception) {
             LogSmooth.addKeyValue(METHOD, "delete()")
-            LogSmooth.addKeyValue("ClockStatusId", clockStatusId)
+            LogSmooth.addKeyValue("OrderTypeId", orderTypeId)
             LogSmooth.addKeyValue(MESSAGE, ex.toString())
             logger.error(LogSmooth.getMessage())
         }
         return isSuccess
     }
 
-    override fun getAll(): List<ClockStatus> {
-        var clockStatusList: List<ClockStatus> = listOf<ClockStatus>()
+    override fun getAll(): List<OrderType> {
+        var orderTypeList: List<OrderType> = listOf<OrderType>()
         try {
-            clockStatusList = jdbcTemplate?.query(ClockStatusSQL.SQL_GET_ALL_CLOCK_STATUS, clockStatusRowMapper()) as List<ClockStatus>
-            return clockStatusList
+            orderTypeList = jdbcTemplate?.query(OrderTypeSQL.SQL_GET_ALL_ORDER_TYPE, orderTypeRowMapper()) as List<OrderType>
+            return orderTypeList
         } catch (ex: Exception) {
             LogSmooth.addKeyValue(METHOD, "getAll()")
             LogSmooth.addKeyValue(MESSAGE, ex.toString())
             logger.error(LogSmooth.getMessage())
         }
-        return clockStatusList;
+        return orderTypeList;
     }
 
-    private fun clockStatusRowMapper(): RowMapper<ClockStatus> {
-        return RowMapper<ClockStatus> { rs: ResultSet, _: Int ->
-            ClockStatus(
-                rs.getInt(COL_CLOCK_STATUS_ID),
-                rs.getString(COL_CLOCK_STATUS_NAME)
+    private fun orderTypeRowMapper(): RowMapper<OrderType> {
+        return RowMapper<OrderType> { rs: ResultSet, _: Int ->
+            OrderType(
+                rs.getInt(COL_ORDER_TYPE_ID),
+                rs.getString(COL_ORDER_TYPE_NAME)
             )
         }
     }

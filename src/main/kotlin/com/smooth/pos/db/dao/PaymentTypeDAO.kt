@@ -1,13 +1,13 @@
 package com.smooth.pos.db.dao
 
-import com.smooth.pos.db.respository.ClockStatusRepository
+import com.smooth.pos.db.respository.PaymentTypeRepository
 import com.smooth.pos.log.KeyLogger.Companion.MESSAGE
 import com.smooth.pos.log.KeyLogger.Companion.METHOD
 import com.smooth.pos.log.LogSmooth
-import com.smooth.pos.model.db.ColumnName.Companion.COL_CLOCK_STATUS_ID
-import com.smooth.pos.model.db.ColumnName.Companion.COL_CLOCK_STATUS_NAME
-import com.smooth.pos.model.db.sql.ClockStatusSQL
-import com.smooth.pos.model.status.ClockStatus
+import com.smooth.pos.model.db.ColumnName.Companion.COL_PAYMENT_TYPE_ID
+import com.smooth.pos.model.db.ColumnName.Companion.COL_PAYMENT_TYPE_NAME
+import com.smooth.pos.model.db.sql.PaymentTypeSQL
+import com.smooth.pos.model.type.PaymentType
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.JdbcTemplate
@@ -18,7 +18,7 @@ import java.sql.ResultSet
 private val logger = KotlinLogging.logger {}
 
 @Component
-class ClockStatusDAO: ClockStatusRepository {
+class PaymentTypeDAO: PaymentTypeRepository {
     private var jdbcTemplate: JdbcTemplate? = null
 
     @Autowired
@@ -26,12 +26,12 @@ class ClockStatusDAO: ClockStatusRepository {
         this.jdbcTemplate = jdbcTemplate
     }
 
-    override fun add(clockStatus: ClockStatus): Boolean {
+    override fun add(paymentType: PaymentType): Boolean {
         var isSuccess: Boolean = false
         try {
             jdbcTemplate?.update(
-                ClockStatusSQL.SQL_ADD_CLOCK_STATUS,
-                clockStatus.clockStatusName
+                PaymentTypeSQL.SQL_ADD_PAYMENT_TYPE,
+                paymentType.paymentTypeName
             )
             isSuccess = true
         } catch (ex: Exception) {
@@ -42,13 +42,13 @@ class ClockStatusDAO: ClockStatusRepository {
         return isSuccess
     }
 
-    override fun update(clockStatus: ClockStatus): Boolean {
+    override fun update(paymentType: PaymentType): Boolean {
         var isSuccess: Boolean = false
         try {
             jdbcTemplate?.update(
-                ClockStatusSQL.SQL_UPDATE_CLOCK_STATUS,
-                clockStatus.clockStatusName,
-                clockStatus.id
+                PaymentTypeSQL.SQL_UPDATE_PAYMENT_TYPE,
+                paymentType.paymentTypeName,
+                paymentType.id
             )
             isSuccess = true
         } catch (ex: Exception) {
@@ -59,41 +59,41 @@ class ClockStatusDAO: ClockStatusRepository {
         return isSuccess
     }
 
-    override fun delete(clockStatusId: Int): Boolean {
+    override fun delete(paymentTypeId: Int): Boolean {
         var isSuccess: Boolean = false
         try {
             jdbcTemplate?.update(
-                ClockStatusSQL.SQL_DELETE_CLOCK_STATUS,
-                clockStatusId
+                PaymentTypeSQL.SQL_DELETE_PAYMENT_TYPE,
+                paymentTypeId
             )
             isSuccess = true
         } catch (ex: Exception) {
             LogSmooth.addKeyValue(METHOD, "delete()")
-            LogSmooth.addKeyValue("ClockStatusId", clockStatusId)
+            LogSmooth.addKeyValue("PaymentTypeId", paymentTypeId)
             LogSmooth.addKeyValue(MESSAGE, ex.toString())
             logger.error(LogSmooth.getMessage())
         }
         return isSuccess
     }
 
-    override fun getAll(): List<ClockStatus> {
-        var clockStatusList: List<ClockStatus> = listOf<ClockStatus>()
+    override fun getAll(): List<PaymentType> {
+        var paymentTypeList: List<PaymentType> = listOf<PaymentType>()
         try {
-            clockStatusList = jdbcTemplate?.query(ClockStatusSQL.SQL_GET_ALL_CLOCK_STATUS, clockStatusRowMapper()) as List<ClockStatus>
-            return clockStatusList
+            paymentTypeList = jdbcTemplate?.query(PaymentTypeSQL.SQL_GET_ALL_PAYMENT_TYPE, paymentTypeRowMapper()) as List<PaymentType>
+            return paymentTypeList
         } catch (ex: Exception) {
             LogSmooth.addKeyValue(METHOD, "getAll()")
             LogSmooth.addKeyValue(MESSAGE, ex.toString())
             logger.error(LogSmooth.getMessage())
         }
-        return clockStatusList;
+        return paymentTypeList;
     }
 
-    private fun clockStatusRowMapper(): RowMapper<ClockStatus> {
-        return RowMapper<ClockStatus> { rs: ResultSet, _: Int ->
-            ClockStatus(
-                rs.getInt(COL_CLOCK_STATUS_ID),
-                rs.getString(COL_CLOCK_STATUS_NAME)
+    private fun paymentTypeRowMapper(): RowMapper<PaymentType> {
+        return RowMapper<PaymentType> { rs: ResultSet, _: Int ->
+            PaymentType(
+                rs.getInt(COL_PAYMENT_TYPE_ID),
+                rs.getString(COL_PAYMENT_TYPE_NAME)
             )
         }
     }

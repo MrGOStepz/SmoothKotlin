@@ -1,6 +1,7 @@
 package com.smooth.pos.db.respository
 
 import com.smooth.pos.model.Customer
+import com.smooth.pos.model.Staff
 
 interface CustomerRepository {
     fun add(customer: Customer): Boolean
@@ -8,4 +9,5 @@ interface CustomerRepository {
     fun delete(customerId: Int): Boolean
     fun getAll(): List<Customer>
     fun getById(id: Int): Customer
+    fun getByColumn(columnName: String, valueName: String): List<Customer>
 }
